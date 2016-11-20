@@ -1,2 +1,11 @@
-# marinator
-Repository for the WIP Marinator library
+# Marinator
+Repository for the Marinator library
+
+Remaining work:
+* Rename MarinadeHelper or re-work classes to fully generate Marinator.
+* Write tests for Marinator
+* Package library into Maven/etc and distribute
+* Write release instructions
+* Write README with how to use instructions/etc
+
+
