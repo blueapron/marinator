@@ -86,10 +86,10 @@ public final class InjectorProcessor extends BaseProcessor {
                 .addModifiers(Modifier.PRIVATE, Modifier.STATIC)
                 .build();
 
-        // Generate the create method builder.
+        // Generate the prepare method builder.
         List<FieldSpec> fields = new ArrayList<>(injectors.keySet().size());
         List<ParameterSpec> params = new ArrayList<>(injectors.keySet().size());
-        MethodSpec.Builder createBuilder = MethodSpec.methodBuilder("create")
+        MethodSpec.Builder prepareBuilder = MethodSpec.methodBuilder("prepare")
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC);
 
         // Generate a private constructor builder.
@@ -122,7 +122,7 @@ public final class InjectorProcessor extends BaseProcessor {
             // Assign the parameter to the field.
             ParameterSpec assign = ParameterSpec.builder(typeName, paramName).build();
             params.add(assign);
-            createBuilder.addParameter(assign);
+            prepareBuilder.addParameter(assign);
             constructorBuilder.addParameter(assign);
             constructorBuilder.addStatement("$1N = $2N", field, assign);
 
@@ -153,7 +153,7 @@ public final class InjectorProcessor extends BaseProcessor {
             paramNames.append("$N,");
         }
         paramNames.deleteCharAt(paramNames.length() - 1);
-        createBuilder.addStatement(String.format("%s = new %s(%s)", INSTANCE_NAME,
+        prepareBuilder.addStatement(String.format("%s = new %s(%s)", INSTANCE_NAME,
                 GENERATED_CLASS_NAME, paramNames), params.toArray());
 
         // Finalize the methods.
@@ -169,7 +169,7 @@ public final class InjectorProcessor extends BaseProcessor {
         TypeSpec helper = TypeSpec.classBuilder(outputType)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addSuperinterface(injectorInterface)
-                .addMethod(createBuilder.build())
+                .addMethod(prepareBuilder.build())
                 .addMethod(constructorBuilder.build())
                 .addMethod(registerBuilder.build())
                 .addMethod(injectBuilder.build())
