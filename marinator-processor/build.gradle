@@ -16,8 +16,6 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-
     compile project(path: ':marinator')
     compile 'com.google.guava:guava:19.0'
     compile 'com.squareup:javapoet:1.7.0'

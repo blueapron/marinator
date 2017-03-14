@@ -7,7 +7,7 @@ When using dependency injection, getting access to the classes which perform the
 
 Marinator helps solve this problem by wrapping your components with a simple static class. Instead of calling code like `MyApplication.get().getComponent().inject(this)`, you can simply call `Marinator.inject(this)`. Marinator relies on an annotation processor to generate a helper that registers your injectors - as a developer, all you have to do is annotate your injector methods and provide the component to the MarinadeHelper.
 
-Marinator was created with Dagger2 style dependency injection in mind. But there's no requirement that you use Dagger2 or even any sort of framework for DI to use Marinator. As long as your injector class has a method annotated with `@Inject`, Marinator will recognize this and add it to the `prepare` method.
+Marinator was created with Dagger2 style dependency injection in mind. But there's no requirement that you use Dagger2 or even any sort of framework for DI to use Marinator. As long as your injector class has a method annotated with `@Injector`, Marinator will recognize this and add it to the `prepare` method.
 
 Setup
 ------
