@@ -55,7 +55,7 @@ public final class InjectorProcessor extends BaseProcessor {
 
         // First find all the methods that are registered as @Injector. This will allow us to map
         // which class injects which types.
-        Map<TypeElement, List<TypeMirror>> injectorMap = new LinkedHashMap<>();
+        Map<TypeElement, List<InjectorRecord>> injectorMap = new LinkedHashMap<>();
         for (ExecutableElement method : ElementFilter.methodsIn(injectMethods)) {
             List<? extends VariableElement> vars = method.getParameters();
             Preconditions.checkArgument(vars.size() == 1, "Injectors can only take in one object!");
@@ -63,12 +63,12 @@ public final class InjectorProcessor extends BaseProcessor {
 
             // Insert this into the list for the parent type.
             TypeElement type = (TypeElement) method.getEnclosingElement();
-            List<TypeMirror> injected = injectorMap.get(type);
+            List<InjectorRecord> injected = injectorMap.get(type);
             if (injected == null) {
                 injected = new ArrayList<>();
                 injectorMap.put(type, injected);
             }
-            injected.add(varType.asType());
+            injected.add(new InjectorRecord(method.getSimpleName().toString(), varType.asType()));
         }
 
         // Output the final class.
@@ -77,7 +77,7 @@ public final class InjectorProcessor extends BaseProcessor {
         return true;
     }
 
-    private JavaFile constructClass(Map<TypeElement, List<TypeMirror>> injectors) {
+    private JavaFile constructClass(Map<TypeElement, List<InjectorRecord>> injectors) {
         ClassName outputType = ClassName.get(PACKAGE_NAME, GENERATED_CLASS_NAME);
         ClassName injectorsClass = ClassName.get(ROOT_PACKAGE, INJECTORS_CLASS_NAME);
 
@@ -127,8 +127,9 @@ public final class InjectorProcessor extends BaseProcessor {
             constructorBuilder.addStatement("$1N = $2N", field, assign);
 
             // Now walk the relevant classes.
-            for (TypeMirror mirror : injectors.get(type)) {
-                TypeName mirrorName = TypeName.get(mirror);
+            for (InjectorRecord record : injectors.get(type)) {
+                String methodName = record.methodName;
+                TypeName mirrorName = TypeName.get(record.mirror);
 
                 // Add the registration statement to the register method.
                 registerBuilder.addStatement("$1T.registerInjector($2T.class, this)",
@@ -142,7 +143,8 @@ public final class InjectorProcessor extends BaseProcessor {
                     injectBuilder.nextControlFlow("else if ($1N instanceof $2T)", objParam,
                             mirrorName);
                 }
-                injectBuilder.addStatement("$1N.inject(($2T) $3N)", field, mirrorName, objParam);
+                injectBuilder.addStatement("$1N.$2N(($3T) $4N)", field, methodName, mirrorName,
+                        objParam);
             }
         }
 
@@ -177,5 +179,18 @@ public final class InjectorProcessor extends BaseProcessor {
                 .addField(instanceField)
                 .build();
         return JavaFile.builder(PACKAGE_NAME, helper).build();
+    }
+
+    /**
+     * Simple helper to associate a method name with the type that it injects.
+     */
+    private static final class InjectorRecord {
+        public final String methodName;
+        public final TypeMirror mirror;
+
+        public InjectorRecord(String methodName, TypeMirror mirror) {
+            this.methodName = methodName;
+            this.mirror = mirror;
+        }
     }
 }
