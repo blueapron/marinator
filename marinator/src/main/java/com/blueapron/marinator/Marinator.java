@@ -4,8 +4,7 @@ import java.util.HashMap;
 
 /**
  * Centralized repository for all injectors. This enables us to swap out implementations of
- * injectors trivially during testing. Note that this is only suitable for application-level
- * injection - narrower scopes are not appropriate to store statically.
+ * injectors trivially during testing.
  */
 public final class Marinator {
 
@@ -21,6 +20,12 @@ public final class Marinator {
                 throw new IllegalArgumentException("Cannot register multiple injectors for class!");
             }
             sInjectors.put(clazz, injector);
+        }
+    }
+
+    public static void unregisterInjector(Class clazz) {
+        synchronized (sInjectors) {
+            sInjectors.remove(clazz);
         }
     }
 
