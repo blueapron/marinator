@@ -3,7 +3,7 @@ Marinator
 
 Dependency Injection made delicious.
 
-When using dependency injection, getting access to the classes which perform the injection is a common problem. On Android, the most common solution to this tends to be to store the components in the Application object. But this then requires the developer to reach into their Application object in multiple places in their code. This creates several challenges - in addition to just looking ugly, it can make it harder to write pure JUnit tests.
+When using dependency injection, getting access to the classes which perform the injection is a common problem. On Android, the most common solution to this tends to be to store the components in the Application object. But this then requires the developer to reach into their Application object in multiple places throughout their code. This creates several challenges - in addition to just looking ugly, it can make it harder to write pure JUnit tests.
 
 Marinator helps solve this problem by wrapping your components with a simple static class. Instead of calling code like `MyApplication.get().getComponent().inject(this)`, you can simply call `Marinator.inject(this)`. Marinator relies on an annotation processor to generate a helper that registers your injectors - as a developer, all you have to do is annotate your injector methods and provide the component to the MarinadeHelper.
 
