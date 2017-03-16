@@ -22,7 +22,7 @@ dependencies {
 }
 ```
 
-When you define your components, declare the injector methods and annotate them with `@Inject`. So, as an example:
+When you define your components, declare the injector methods and annotate them with `@Injector`. So, as an example:
 
 ```java
 @Singleton
