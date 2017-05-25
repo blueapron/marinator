@@ -1,0 +1,13 @@
+apply plugin: 'net.ltgt.apt'
+apply plugin: 'java'
+
+sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
+targetCompatibility = rootProject.ext.sourceCompatibilityVersion
+
+dependencies {
+    compile project(':marinator')
+    apt project(':marinator-processor')
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:3.6.2'
+}

@@ -1,0 +1,13 @@
+machine:
+  timezone:
+    America/New_York
+  environment:
+    ANDROID_HOME: /usr/local/android-sdk-linux
+    BUILD_TOOLS_VERSION: 25.0.3
+    BUILD_TOOLS: $ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION
+    INFO_FILE: $CIRCLE_ARTIFACTS/apk_info.txt
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=1024m -Xms512m -XX:+HeapDumpOnOutOfMemoryError"'
+
+test:
+  override:
+    - ./gradlew clean test

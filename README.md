@@ -99,6 +99,13 @@ public final class Wine {
 }
 ```
 
+Testing
+------
+
+To run the Marinator tests, use the command line. (Android Studio doesn't play nicely with annotation processing in unit tests)
+
+From the root directory of the project, run `./gradlew clean test` to run the unit tests.
+
 License
 -------
 
