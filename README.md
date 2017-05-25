@@ -1,6 +1,8 @@
 Marinator
 ============
 
+[![CircleCI](https://circleci.com/gh/blueapron/marinator/tree/master.svg?style=shield&circle-token=3abd00c5089a936b41f8fc49bd5fffe0694ee8c6)](https://circleci.com/gh/blueapron/marinator/tree/master)
+
 Dependency Injection made delicious.
 
 When using dependency injection, getting access to the classes which perform the injection is a common problem. On Android, the most common solution to this tends to be to store the components in the Application object. But this then requires the developer to reach into their Application object in multiple places throughout their code. This creates several challenges - in addition to just looking ugly, it can make it harder to write pure JUnit tests.
