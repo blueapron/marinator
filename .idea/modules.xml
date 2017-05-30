@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/marinator/marinator.iml" filepath="$PROJECT_DIR$/.idea/modules/marinator/marinator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/marinator-processor/marinator-processor.iml" filepath="$PROJECT_DIR$/.idea/modules/marinator-processor/marinator-processor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/marinator-root.iml" filepath="$PROJECT_DIR$/.idea/modules/marinator-root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/marinator-tests/marinator-tests.iml" filepath="$PROJECT_DIR$/.idea/modules/marinator-tests/marinator-tests.iml" />
+    </modules>
+  </component>
+</project>

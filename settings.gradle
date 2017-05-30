@@ -1,0 +1,5 @@
+include ':marinator', ':marinator-tests'
+include ':marinator-processor'
+
+rootProject.name = 'marinator-root'
+
