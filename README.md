@@ -2,6 +2,8 @@ Marinator
 ============
 
 [![CircleCI](https://circleci.com/gh/blueapron/marinator/tree/master.svg?style=shield&circle-token=3abd00c5089a936b41f8fc49bd5fffe0694ee8c6)](https://circleci.com/gh/blueapron/marinator/tree/master)
+[![Release](https://jitpack.io/v/blueapron/marinator.svg)]
+(https://jitpack.io/#blueapron/marinator)
 
 Dependency Injection made delicious.
 
@@ -14,10 +16,17 @@ Marinator was created with Dagger2 style dependency injection in mind. But there
 Setup
 ------
 
-To use Marinator in your project, add the following lines to your `build.gradle` file:
+Marinator is distributed via Jitpack. To use Marinator in your project, add the following lines to your `build.gradle` file:
 
 ```groovy
-# TODO: update with the final location/verison
+# Root build.gradle file:
+allprojects {
+  repositories {
+    maven { url "https://jitpack.io" }
+  }
+}
+
+# App-level build.gradle file:
 dependencies {
   compile 'com.blueapron:marinator:1.0.0'
   annotationProcessor 'com.blueapron:marinator-processor:1.0.0'
