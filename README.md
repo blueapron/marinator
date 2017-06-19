@@ -2,6 +2,8 @@ Marinator
 ============
 
 [![CircleCI](https://circleci.com/gh/blueapron/marinator/tree/master.svg?style=shield&circle-token=3abd00c5089a936b41f8fc49bd5fffe0694ee8c6)](https://circleci.com/gh/blueapron/marinator/tree/master)
+[![Release](https://jitpack.io/v/blueapron/marinator.svg)]
+(https://jitpack.io/#blueapron/marinator)
 
 Dependency Injection made delicious.
 
