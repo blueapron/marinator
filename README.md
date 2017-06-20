@@ -19,14 +19,14 @@ Setup
 Marinator is distributed via Jitpack. To use Marinator in your project, add the following lines to your `build.gradle` file:
 
 ```groovy
-# Root build.gradle file:
+// Root build.gradle file:
 allprojects {
   repositories {
     maven { url "https://jitpack.io" }
   }
 }
 
-# App-level build.gradle file:
+// App-level build.gradle file:
 dependencies {
   compile 'com.blueapron:marinator:1.0.0'
   annotationProcessor 'com.blueapron:marinator-processor:1.0.0'
@@ -46,7 +46,7 @@ public interface ApplicationComponent {
   // whatever you want - it doesn't have to be
   // called "inject".
   @Injector
-  void provide(Wine wine); 
+  void provide(Wine wine);
 
   // Other Dagger component dependencies declared here.
 }
@@ -76,7 +76,7 @@ public class MyApplication extends Application {
 public abstract class BaseUnitTest extends TestCase {
 
   // ...
-  
+
   @Before
   public void init() {
       mApplicationComponent = DaggerMockApplicationComponent.create();
@@ -121,4 +121,3 @@ License
 -------
 
 Marinator is licensed under the MIT license. See [the license](LICENSE) for details.
-
