@@ -27,9 +27,16 @@ allprojects {
 }
 
 // App-level build.gradle file:
+
+// If using Kotlin:
+apply plugin: 'kotlin-kapt'
+
 dependencies {
   compile 'com.blueapron:marinator:1.0.0'
   annotationProcessor 'com.blueapron:marinator-processor:1.0.0'
+
+  // If using Kotlin:
+  kapt 'com.blueapron:marinator-processor:1.0.0'
 }
 ```
 
