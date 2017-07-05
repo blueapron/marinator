@@ -1,4 +1,4 @@
 Releasing
 ========
 
-1. Make sure you have an account on http://bintray.com. You can create one with your GitHub account.
+To generate a new release, create a tag in GitHub. That should be sufficient for Jitpack to pick up the new release based on the GitHub tag.
