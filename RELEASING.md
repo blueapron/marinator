@@ -1,4 +1,4 @@
 Releasing
 ========
 
-1. Make sure you have an account on http://bintray.com. You can create one with your GitHub account.
+To generate a new release, create a tag in GitHub. After doing so, run `./gradlew install` from the root directory to upload a new build to Jitpack.
