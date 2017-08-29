@@ -1,3 +1,7 @@
+<p align="center" >
+  <img src="https://user-images.githubusercontent.com/16063079/29837717-f3a09954-8cc6-11e7-8b3b-c89719d5ac40.png" width=256px height=256 alt="Marinator" title="Marinator">
+</p>
+
 Marinator
 ============
 
