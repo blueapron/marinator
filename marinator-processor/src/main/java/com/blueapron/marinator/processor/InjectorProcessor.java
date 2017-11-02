@@ -12,6 +12,7 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -107,6 +108,7 @@ public final class InjectorProcessor extends BaseProcessor {
                 .addAnnotation(Override.class)
                 .addParameter(objParam);
 
+
         boolean firstArg = true;
         for (TypeElement type : injectors.keySet()) {
             TypeName typeName = TypeName.get(type.asType());
@@ -122,8 +124,6 @@ public final class InjectorProcessor extends BaseProcessor {
             // Assign the parameter to the field.
             ParameterSpec assign = ParameterSpec.builder(typeName, paramName).build();
             params.add(assign);
-            prepareBuilder.addParameter(assign);
-            constructorBuilder.addParameter(assign);
             constructorBuilder.addStatement("$1N = $2N", field, assign);
 
             // Now walk the relevant classes.
@@ -148,10 +148,17 @@ public final class InjectorProcessor extends BaseProcessor {
             }
         }
 
+        // Sort the parameters by class name. This guarantees that the generated constructor has
+        // a stable signature, regardless of the file traversal order.
+        params.sort(new ParameterComparator());
+
         // Finish generating the create method's call to the constructor. We need to know how
-        // many params to pass in to the constructor.
+        // many params to pass in to the constructor. We add the parameters for the prepare
+        // method and the constructor here to guarantee their ordering.
         StringBuilder paramNames = new StringBuilder();
         for (ParameterSpec spec : params) {
+            constructorBuilder.addParameter(spec);
+            prepareBuilder.addParameter(spec);
             paramNames.append("$N,");
         }
         paramNames.deleteCharAt(paramNames.length() - 1);
@@ -191,6 +198,13 @@ public final class InjectorProcessor extends BaseProcessor {
         public InjectorRecord(String methodName, TypeMirror mirror) {
             this.methodName = methodName;
             this.mirror = mirror;
+        }
+    }
+
+    private static final class ParameterComparator implements Comparator<ParameterSpec> {
+        @Override
+        public int compare(ParameterSpec a, ParameterSpec b) {
+            return a.name.compareTo(b.name);
         }
     }
 }
