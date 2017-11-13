@@ -61,6 +61,7 @@ public final class InjectorProcessor extends BaseProcessor {
             List<? extends VariableElement> vars = method.getParameters();
             Preconditions.checkArgument(vars.size() == 1, "Injectors can only take in one object!");
             TypeElement varType = (TypeElement) mTypeUtils.asElement(vars.get(0).asType());
+            Injector injector = method.getAnnotation(Injector.class);
 
             // Insert this into the list for the parent type.
             TypeElement type = (TypeElement) method.getEnclosingElement();
@@ -69,7 +70,8 @@ public final class InjectorProcessor extends BaseProcessor {
                 injected = new ArrayList<>();
                 injectorMap.put(type, injected);
             }
-            injected.add(new InjectorRecord(method.getSimpleName().toString(), varType.asType()));
+            injected.add(new InjectorRecord(method.getSimpleName().toString(), varType.asType(),
+                    injector.strict()));
         }
 
         // Output the final class.
@@ -108,7 +110,6 @@ public final class InjectorProcessor extends BaseProcessor {
                 .addAnnotation(Override.class)
                 .addParameter(objParam);
 
-
         boolean firstArg = true;
         for (TypeElement type : injectors.keySet()) {
             TypeName typeName = TypeName.get(type.asType());
@@ -132,8 +133,8 @@ public final class InjectorProcessor extends BaseProcessor {
                 TypeName mirrorName = TypeName.get(record.mirror);
 
                 // Add the registration statement to the register method.
-                registerBuilder.addStatement("$1T.registerInjector($2T.class, this)",
-                        injectorsClass, mirrorName);
+                registerBuilder.addStatement("$1T.registerInjector($2T.class, this, $3L)",
+                        injectorsClass, mirrorName, record.strict);
 
                 // Now add the control statement to the inject method.
                 if (firstArg) {
@@ -194,10 +195,12 @@ public final class InjectorProcessor extends BaseProcessor {
     private static final class InjectorRecord {
         public final String methodName;
         public final TypeMirror mirror;
+        public final boolean strict;
 
-        public InjectorRecord(String methodName, TypeMirror mirror) {
+        public InjectorRecord(String methodName, TypeMirror mirror, boolean strict) {
             this.methodName = methodName;
             this.mirror = mirror;
+            this.strict = strict;
         }
     }
 

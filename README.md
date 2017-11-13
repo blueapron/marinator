@@ -35,11 +35,11 @@ allprojects {
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-  compile 'com.github.blueapron.marinator:marinator:1.0.3'
-  annotationProcessor 'com.github.blueapron.marinator:marinator-processor:1.0.3'
+  compile 'com.github.blueapron.marinator:marinator:1.0.4'
+  annotationProcessor 'com.github.blueapron.marinator:marinator-processor:1.0.4'
 
   // If using Kotlin:
-  kapt 'com.github.blueapron.marinator:marinator-processor:1.0.3'
+  kapt 'com.github.blueapron.marinator:marinator-processor:1.0.4'
 }
 ```
 
@@ -119,6 +119,88 @@ public final class Wine {
   }
 }
 ```
+
+Strict vs Loose Injection
+------
+
+Marinator supports two different injection modes, which we call "strict" and "loose". By default, all injectors are strict - the Injector registered for a class will match that class name only. This is the safest default behavior, since it prevents unintended consequences. But sometimes, it's useful to be slightly looser and let injection be provided by a super class. Notably, this might be the case if you are extending a production class with a testing class - all of the injected dependencies can be satisfied by the production injection, so loose injection is safe.
+
+Consider the following example:
+```java
+public class Fruit {
+  @Inject Context mContext;
+
+  public Fruit() {
+    Marinator.inject(this);
+  }
+}
+
+public class Apple extends Fruit {
+}
+
+public class Banana extends Fruit {
+}
+
+public class Cherry extends Fruit {
+}
+```
+
+We might register our Injector for this scenario as follows:
+
+```java
+@Singleton
+@Component(modules = FruitModule.class)
+public interface FruitComponent {
+  @Injector
+  void inject(Apple apple);
+  @Injector
+  void inject(Banana banana);
+  @Injector
+  void inject(Cherry cherry);
+}
+```
+
+This is using the default of strict injection. This is safe, but somewhat annoying if someone adds a new Fruit - they have to remember to add a new injector for their new type. Using loose injection, we could write the following:
+
+```java
+@Singleton
+@Component(modules = FruitModule.class)
+public interface FruitComponent {
+  @Injector(strict = false)
+  void inject(Fruit fruit);
+}
+```
+
+That's it! All new Fruit subclasses will "just work". The downside to this approach is that if someone changes a Fruit subclass to require specific injection (ie, by adding injected members), the code may produce unexpected results since the expected Injector will not be run.
+
+The implication of this is that *you should not mix strict and loose for objects in the same class hierarchy.* This behavior is important to remember if you choose to use loose injection. Since Marinator will generate its injection cascade based on a non-determinstic order of traversal, you cannot guarantee that superclass evaluation will be checked before subclass - leading to unexpected results. So for all objects within a given class hierarchy, use *either* strict injection *or* loose injection, but not both.
+
+To demonstrate this, consider the following component:
+
+```java
+@Singleton
+@Component(modules = FruitModule.class)
+public interface FruitComponent {
+  @Injector(strict = false)
+  void inject(Fruit fruit);
+  @Injector
+  void inject(Apple apple);
+}
+```
+
+What will happen when an Apple is constructed? It depends on exactly which code Marinator happens to generate. The generated code may read something like this:
+
+```java
+@Override
+public void inject(Object obj) {
+  if (obj instanceof Fruit) {
+    mFruitComponent.inject((Fruit) obj);
+  } else if (obj instanceof Apple) {
+    mFruitComponent.inject((Apple) obj);
+  }
+```
+
+This would result in undefined behavior where `Apple` objects would not have their members injected correctly. (If mixing strict and loose injection is important for your use cases, please file an issue so we can track it and consider the best way to support it in a future release.)
 
 Testing
 ------
