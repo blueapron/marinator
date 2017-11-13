@@ -35,7 +35,7 @@ allprojects {
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-  compile 'com.github.blueapron.marinator:marinator:1.0.4'
+  implementation 'com.github.blueapron.marinator:marinator:1.0.4'
   annotationProcessor 'com.github.blueapron.marinator:marinator-processor:1.0.4'
 
   // If using Kotlin:
