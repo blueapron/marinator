@@ -46,7 +46,17 @@ public final class Marinator {
 
     private static Injector getInjector(Class clazz) {
         synchronized (sInjectors) {
-            return sInjectors.get(clazz);
+            Injector injector = sInjectors.get(clazz);
+            if (injector != null) {
+                return injector;
+            }
+
+            // If loose injection is allowed, check to see if we can inject via parent class.
+            for (Class parent : sInjectors.keySet()) {
+                if (clazz.isAssignableFrom(parent)) {
+                    return sInjectors.get(parent);
+                }
+            }
         }
     }
 

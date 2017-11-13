@@ -12,6 +12,7 @@ import com.blueapron.marinator.test.models.BananaObject;
 import com.blueapron.marinator.test.models.NetObject1;
 import com.blueapron.marinator.test.models.NetObject2;
 import com.blueapron.marinator.test.models.NonInjectedObject;
+import com.blueapron.marinator.test.models.OkapiObject;
 import com.blueapron.marinator.test.models.ZebraObject;
 
 import org.junit.Test;
@@ -63,6 +64,22 @@ public class MarinatorTest {
         assertThat(zebra.injected).isFalse();
         Marinator.inject(zebra);
         assertThat(zebra.injected).isTrue();
+
+        // While in strict mode, we shouldn't be able to inject a child class.
+        OkapiObject okapi = new OkapiObject();
+        assertThat(okapi.injected).isFalse();
+        try {
+            Marinator.inject(okapi);
+            fail("Strict injection should fail");
+        } catch (IllegalStateException ise) {
+            // Expected - this injection should fail.
+        }
+        
+        // Once we disable strict mode, injection of a child class via a super class should work.
+        assertThat(okapi.injected).isFalse();
+        Marinator.inject(okapi);
+        assertThat(okapi.injected).isTrue();
+        assertThat(okapi.isOkapi).isTrue();
 
         NonInjectedObject nonInjected = new NonInjectedObject();
         assertThat(nonInjected.injected).isFalse();
