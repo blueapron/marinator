@@ -198,6 +198,7 @@ public void inject(Object obj) {
   } else if (obj instanceof Apple) {
     mFruitComponent.inject((Apple) obj);
   }
+}
 ```
 
 This would result in undefined behavior where `Apple` objects would not have their members injected correctly. (If mixing strict and loose injection is important for your use cases, please file an issue so we can track it and consider the best way to support it in a future release.)
