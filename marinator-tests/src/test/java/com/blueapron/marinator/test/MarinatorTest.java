@@ -9,9 +9,12 @@ import com.blueapron.marinator.test.components.ZebraComponent;
 import com.blueapron.marinator.test.models.AppObject1;
 import com.blueapron.marinator.test.models.AppObject2;
 import com.blueapron.marinator.test.models.BananaObject;
+import com.blueapron.marinator.test.models.CavendishObject;
 import com.blueapron.marinator.test.models.NetObject1;
 import com.blueapron.marinator.test.models.NetObject2;
 import com.blueapron.marinator.test.models.NonInjectedObject;
+import com.blueapron.marinator.test.models.OkapiObject;
+import com.blueapron.marinator.test.models.OnagerObject;
 import com.blueapron.marinator.test.models.ZebraObject;
 
 import org.junit.Test;
@@ -72,5 +75,23 @@ public class MarinatorTest {
         } catch (IllegalStateException ise) {
             // Expected to fail - move on
         }
+
+        // Banana is a strict injector - so we shouldn't be able to inject a Cavendish without
+        // registering for it directly.
+        CavendishObject cavendish = new CavendishObject();
+        assertThat(cavendish.injected).isFalse();
+        try {
+            Marinator.inject(cavendish);
+            fail("Injecting a strict class with no explicit injector should fail");
+        } catch (IllegalStateException ise) {
+            // Expected - this injection should fail.
+        }
+
+        // ZebraComponent allows loose injection - it lets us inject things that are kind of
+        // zebras, but not quite. Note that the overridden "injected" field is NOT mutated here.
+        OkapiObject okapi = new OkapiObject();
+        assertThat(okapi.injected).isFalse();
+        Marinator.inject(okapi);
+        assertThat(okapi.injected).isFalse();
     }
 }
