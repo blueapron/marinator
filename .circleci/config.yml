@@ -1,0 +1,23 @@
+version: 2.1
+
+container: &container
+    docker:
+      - image: circleci/android:api-29
+    environment:
+      JVM_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+      TZ: "/usr/share/zoneinfo/America/New_York"
+
+jobs:
+  unit_tests:
+    <<: *container
+    resource_class: small
+    steps:
+      - checkout
+      - run: ./gradlew clean test
+
+workflows:
+  version: 2
+
+  run_tests:
+    jobs:
+      - unit_tests
