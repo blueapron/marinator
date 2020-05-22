@@ -1,14 +1,13 @@
 buildscript {
     repositories {
         jcenter()
+        google()
         maven {
             url "https://plugins.gradle.org/m2/"
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
-        classpath 'net.ltgt.gradle:gradle-apt-plugin:0.9'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.android.tools.build:gradle:3.6.0'
     }
 }
 
@@ -19,7 +18,7 @@ allprojects {
 }
 
 ext {
-    sourceCompatibilityVersion = JavaVersion.VERSION_1_7
-    targetCompatibilityVersion = JavaVersion.VERSION_1_7
+    sourceCompatibilityVersion = JavaVersion.VERSION_1_8
+    targetCompatibilityVersion = JavaVersion.VERSION_1_8
 }
 

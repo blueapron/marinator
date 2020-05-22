@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/marinator/marinator.iml" filepath="$PROJECT_DIR$/.idea/modules/marinator/marinator.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/marinator-processor/marinator-processor.iml" filepath="$PROJECT_DIR$/.idea/modules/marinator-processor/marinator-processor.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/marinator-root.iml" filepath="$PROJECT_DIR$/.idea/modules/marinator-root.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/marinator-tests/marinator-tests.iml" filepath="$PROJECT_DIR$/.idea/modules/marinator-tests/marinator-tests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/marinator/marinator.iml" filepath="$PROJECT_DIR$/.idea/modules/marinator/marinator.iml" group="marinator-root/marinator" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/marinator-processor/marinator-processor.iml" filepath="$PROJECT_DIR$/.idea/modules/marinator-processor/marinator-processor.iml" group="marinator-root/marinator-processor" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/marinator-root.iml" filepath="$PROJECT_DIR$/.idea/modules/marinator-root.iml" group="marinator-root" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/marinator-tests/marinator-tests.iml" filepath="$PROJECT_DIR$/.idea/modules/marinator-tests/marinator-tests.iml" group="marinator-root/marinator-tests" />
     </modules>
   </component>
 </project>

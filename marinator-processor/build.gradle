@@ -6,20 +6,12 @@ group='com.github.blueapron'
 sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
 targetCompatibility = rootProject.ext.sourceCompatibilityVersion
 
-def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
-def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, logger)
-for (File file : sdkHandler.sdkLoader.repositories) {
-    repositories.maven {
-        url = file.toURI()
-    }
-}
-
 tasks.withType(JavaCompile) {
     options.warnings = false
 }
 
 dependencies {
     compile project(path: ':marinator')
-    compile 'com.google.guava:guava:19.0'
+    compile 'com.google.guava:guava:29.0-jre'
     compile 'com.squareup:javapoet:1.7.0'
 }
